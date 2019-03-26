@@ -1,0 +1,92 @@
+Read the following data set:
+
+https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data
+
+Task:
+
+1. Create an sqlalchemy engine using a sample from the data set
+
+Solution:
+
+import sqlalchemy
+import pandas as pd
+from sqlalchemy import create_engine
+
+df = pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data',sep=",",header=None)
+df.columns=['age','workclass','fnlwgt','education','educationNum','marital-status','occupation','relationship','race','sex','capital-gain','capital-loss','hours-per-week','native-country','income']
+engine = create_engine('sqlite:///myData.db')
+df.to_sql('alchemynew', engine)
+
+2. Write two basic update queries
+
+Solution:
+
+a)
+
+print(engine.execute('''UPDATE alchemynew
+SET income = '<30K'
+WHERE age=39 and workclass=' State-gov' and fnlwgt=77516
+and education=' Bachelors' and educationNum=13'''))
+
+print(engine.execute('''SELECT * FROM alchemynew
+WHERE age=39 and workclass=' State-gov' and fnlwgt=77516
+and education=' Bachelors' and educationNum=13 ''').fetchall())
+
+b)
+
+print(engine.execute('''UPDATE alchemynew
+SET income = '<30K'
+WHERE age=38 and workclass=' Private' and fnlwgt=215646
+and education=' HS-grad' and educationNum=9'''))
+
+print(engine.execute('''SELECT * FROM alchemynew
+WHERE age=38 and workclass=' Private' and fnlwgt=215646
+and education=' HS-grad' and educationNum=9''').fetchall())
+
+3. Write two delete queries
+
+Solution:
+
+a)
+
+print(engine.execute('''DELETE FROM alchemynew
+WHERE age=39 and workclass=' State-gov' and fnlwgt=77516
+and education=' Bachelors' and educationNum=13'''))
+
+print(engine.execute('''SELECT * FROM alchemynew
+WHERE age=39 and workclass=' State-gov' and fnlwgt=77516
+and education=' Bachelors' and educationNum=13 ''').fetchall())
+
+b)
+
+print(engine.execute('''DELETE FROM alchemynew
+WHERE age=38 and workclass=' Private' and fnlwgt=215646
+and education=' HS-grad' and educationNum=9'''))
+
+print(engine.execute('''SELECT * FROM alchemynew
+WHERE age=38 and workclass=' Private' and fnlwgt=215646
+and education=' HS-grad' and educationNum=9''').fetchall())
+
+4. Write two filter queries
+
+Solution:
+
+a)
+
+print(engine.execute('''SELECT * FROM alchemynew WHERE race LIKE ' W%' limit 10''').fetchall())
+
+b)
+
+print(engine.execute('''SELECT * FROM alchemynew WHERE age  IN(30, 40) limit 10''').fetchall())
+
+5. Write two function queries
+
+Solution:
+
+a)
+
+print(engine.execute('''SELECT * FROM alchemynew WHERE LENGTH(workclass)==8 limit 10''').fetchall())
+
+b)
+
+print(engine.execute('''SELECT sex,upper(sex) FROM alchemynew limit 10''').fetchall())
